@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -28,7 +29,9 @@ public class FuncionarioDTO {
     private String email;
     private String telefone_fixo;
     private String celular;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dataAdmissao;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dataDemissao;
     private String cargo;
     private String carteiraTrabalho;

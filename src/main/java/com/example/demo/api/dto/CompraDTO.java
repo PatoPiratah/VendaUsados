@@ -1,14 +1,15 @@
 package com.example.demo.api.dto;
 
 import com.example.demo.model.entity.Compra;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.time.LocalDateTime;
 
 @Data
@@ -26,7 +27,7 @@ public class CompraDTO {
     private Long idFuncionario;
 
     private Double valor;
-
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime dataCompra;
 
     private String notaFiscal;
@@ -36,6 +37,5 @@ public class CompraDTO {
         CompraDTO dto = modelMapper.map(compra, CompraDTO.class);
         
         return dto;
-
     }
 }

@@ -23,7 +23,7 @@ public class ClientePJ extends Pessoa{
 
     private String cnpj;
 
-    private LocalDate data_abertura;
+    private LocalDate dataCriacao;
 
     private String nomeContato;
 

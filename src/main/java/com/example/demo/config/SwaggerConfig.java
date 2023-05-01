@@ -38,9 +38,9 @@ public class SwaggerConfig {
     }
 
     private Contact contact(){
-        return new Contact("iuri fernandes e Whayan"
-                , "------------------",
-                "------------------");
+        return new Contact("Iuri Fernandes e Whayan Pereira"
+                , "https://github.com/PatoPiratah/VendaUsados",
+                "iurifernandes1@hotmail.com");
     }
 
 }

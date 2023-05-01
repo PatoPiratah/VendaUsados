@@ -3,9 +3,9 @@ package com.example.demo.service;
 import com.example.demo.exception.RegraNegocioException;
 import com.example.demo.model.entity.ClientePJ;
 import com.example.demo.model.repository.ClientePJRepository;
-import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -48,7 +48,7 @@ public class ClientePJService {
                 throw new RegraNegocioException("CNPJ inválido");
             }
 
-            if (clientePJ.getData_abertura() == null) {
+            if (clientePJ.getDataCriacao() == null) {
                 throw new RegraNegocioException("Data inválida");
             }
 
