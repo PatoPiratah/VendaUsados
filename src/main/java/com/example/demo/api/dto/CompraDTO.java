@@ -22,7 +22,6 @@ public class CompraDTO {
     private Long id;
 
     private Long idVeiculo;
-
     private Long idPessoa;
     private Long idFuncionario;
 

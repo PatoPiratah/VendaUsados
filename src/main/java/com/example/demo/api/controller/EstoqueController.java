@@ -45,11 +45,11 @@ public class EstoqueController {
     public ResponseEntity post(EstoqueDTO dto) {
         try {
             Estoque estoque = converter(dto);
-            estoque = service.salvar(estoque);
 
             Endereco endereco = enderecoService.salvar(estoque.getEndereco());
             estoque.setEndereco(endereco);
 
+            estoque = service.salvar(estoque);
             return new ResponseEntity(estoque, HttpStatus.CREATED);
         } catch (RegraNegocioException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
