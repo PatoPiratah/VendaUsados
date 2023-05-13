@@ -17,6 +17,7 @@ public class Compra {
     private Long id;
     @ManyToOne
     private Veiculo veiculo;
+
     /*
     @ManyToOne
     private Pessoa pessoa;

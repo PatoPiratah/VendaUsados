@@ -10,6 +10,12 @@ import javax.persistence.*;
 @AllArgsConstructor
 @MappedSuperclass
 
+/*
+enum Cliente {
+    ClientePF,
+    ClientePJ
+}
+*/
 public class Pessoa {
 
     @Id
