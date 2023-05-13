@@ -64,6 +64,5 @@ public class ClientePFService {
             if (clientePF.getCelular() == null || clientePF.getCelular().trim().equals("")) {
                 throw new RegraNegocioException("Celular inválido");
             }
-
         }
     }

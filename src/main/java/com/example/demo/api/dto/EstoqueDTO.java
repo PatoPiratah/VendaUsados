@@ -21,6 +21,8 @@ public class EstoqueDTO {
     private String numero;
     private String complemento;
 
+    private Long idVeiculo;
+
     public static EstoqueDTO create(Estoque estoque) {
         ModelMapper modelMapper = new ModelMapper();
         EstoqueDTO dto = modelMapper.map(estoque, EstoqueDTO.class);
@@ -29,6 +31,7 @@ public class EstoqueDTO {
         dto.complemento = estoque.getEndereco().getComplemento();
         dto.numero = estoque.getEndereco().getNumero();
         dto.cep = estoque.getEndereco().getCep();
+
         return dto;
     }
 }
