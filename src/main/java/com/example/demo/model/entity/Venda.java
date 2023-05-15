@@ -19,18 +19,16 @@ public class Venda {
     @ManyToOne
     private Veiculo veiculo;
 
-    //TODO perguntar ao Marco Antonio
-
-    /*
     @ManyToOne
-    private Pessoa pessoa;
-    */
+    private ClientePJ clientePJ;
+    @ManyToOne
+    private ClientePF clientePF;
     @ManyToOne
     private Funcionario funcionario;
 
     private Double valor;
 
-    private LocalDateTime dataVenda;
+    private LocalDateTime dataHoraVenda;
 
     private String notaFiscal;
 

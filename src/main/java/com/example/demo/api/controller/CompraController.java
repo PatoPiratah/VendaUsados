@@ -1,11 +1,11 @@
 package com.example.demo.api.controller;
 
 import com.example.demo.api.dto.CompraDTO;
-import com.example.demo.config.service.CompraService;
 import com.example.demo.exception.RegraNegocioException;
 import com.example.demo.model.entity.Compra;
+import com.example.demo.model.entity.Estoque;
 import com.example.demo.model.entity.Veiculo;
-import com.example.demo.service.VeiculoService;
+import com.example.demo.service.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -21,8 +21,9 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 
 public class CompraController {
-    private final CompraService service;
+    private final com.example.demo.service.CompraService service;
     private final VeiculoService veiculoService;
+    private final EstoqueService estoqueService;
 
     @GetMapping()
     public ResponseEntity get() {
@@ -51,7 +52,6 @@ public class CompraController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
     @PutMapping("{id}")
     public ResponseEntity atualizar(@PathVariable("id") Long id, CompraDTO dto) {
         if (!service.getCompraById(id).isPresent()) {
@@ -92,6 +92,20 @@ public class CompraController {
                 compra.setVeiculo(null);
             } else {
                 compra.setVeiculo(veiculo.get());
+                if (dto.getIdEstoque() != null) {
+                    Optional<Estoque> estoque = estoqueService.getEstoqueById(dto.getIdEstoque());
+                    if(estoque.isPresent()) {
+                        // Chama a lista, adiciona um veiculo no estoque e atualiza a variavel no banco de dados!
+                        Estoque estoqueSalvar = estoque.get();
+                        List<Veiculo> veiculosSalvar = estoqueSalvar.getVeiculos();
+                        veiculosSalvar.add(veiculo.get());
+                        estoqueSalvar.setVeiculos(veiculosSalvar);
+                        estoqueService.salvar(estoqueSalvar);
+                        compra.setEstoque(estoqueSalvar);
+                    } else {
+                        compra.setEstoque(null);
+                    }
+                }
             }
         }
         return compra;

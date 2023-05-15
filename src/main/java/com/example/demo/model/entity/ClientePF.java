@@ -15,7 +15,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class ClientePF extends Pessoa{
+public class ClientePF extends Pessoa {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

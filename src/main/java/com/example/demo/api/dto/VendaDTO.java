@@ -23,12 +23,13 @@ public class VendaDTO {
 
     private Long idVeiculo;
 
-    private Long idPessoa;
     private Long idFuncionario;
+    private Long idClientePF;
+    private Long idClientePJ;
 
     private Double valor;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime dataVenda;
+    private LocalDateTime dataHoraVenda;
 
     private String notaFiscal;
 

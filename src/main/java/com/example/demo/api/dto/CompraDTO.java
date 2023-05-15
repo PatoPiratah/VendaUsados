@@ -22,19 +22,18 @@ public class CompraDTO {
     private Long id;
 
     private Long idVeiculo;
-    private Long idPessoa;
-    private Long idFuncionario;
 
     private Double valor;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime dataCompra;
+    private LocalDateTime dataHoraCompra;
 
     private String notaFiscal;
+    private Long idEstoque;
 
     public static CompraDTO create(Compra compra) {
         ModelMapper modelMapper = new ModelMapper();
         CompraDTO dto = modelMapper.map(compra, CompraDTO.class);
-        
+
         return dto;
     }
 }

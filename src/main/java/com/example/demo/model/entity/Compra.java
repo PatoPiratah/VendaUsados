@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+
 @Entity
 @Data
 @NoArgsConstructor
@@ -17,15 +18,12 @@ public class Compra {
     private Long id;
     @ManyToOne
     private Veiculo veiculo;
-
-    /*
-    @ManyToOne
-    private Pessoa pessoa;
-    */
-
     private Double valor;
 
-    private LocalDateTime dataCompra;
+    private LocalDateTime dataHoraCompra;
 
     private String notaFiscal;
+
+    @ManyToOne
+    private Estoque estoque;
 }

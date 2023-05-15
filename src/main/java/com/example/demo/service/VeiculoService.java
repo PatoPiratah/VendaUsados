@@ -50,11 +50,6 @@ public class VeiculoService {
             throw new RegraNegocioException("Tipo Veiculo inválido");
         }
 
-        if (veiculo.getEstoque() == null || veiculo.getEstoque().getId() == 0 ||
-                veiculo.getEstoque().getId() == null) {
-            throw new RegraNegocioException("Estoque inválido");
-        }
-
         if (veiculo.getMarca() == null || veiculo.getMarca().trim().equals("")) {
             throw new RegraNegocioException("Marca inválida");
         }
