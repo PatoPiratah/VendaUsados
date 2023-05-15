@@ -2,12 +2,8 @@ package com.example.demo.api.controller;
 
 import com.example.demo.api.dto.VendaDTO;
 import com.example.demo.exception.RegraNegocioException;
-import com.example.demo.model.entity.Venda;
-import com.example.demo.model.entity.Funcionario;
-import com.example.demo.model.entity.Veiculo;
-import com.example.demo.service.VendaService;
-import com.example.demo.service.FuncionarioService;
-import com.example.demo.service.VeiculoService;
+import com.example.demo.model.entity.*;
+import com.example.demo.service.*;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
@@ -25,6 +21,8 @@ import java.util.stream.Collectors;
 public class VendaController {
     private final VendaService service;
     private final FuncionarioService funcionarioService;
+    private final ClientePFService clientePFService;
+    private final ClientePJService clientePJService;
 
     private final VeiculoService veiculoService;
 
@@ -105,6 +103,22 @@ public class VendaController {
                 venda.setVeiculo(null);
             } else {
                 venda.setVeiculo(veiculo.get());
+            }
+        }
+        if (dto.getIdClientePF() != null) {
+            Optional<ClientePF> clientePF = clientePFService.getClientePFById(dto.getIdClientePF());
+            if (!clientePF.isPresent()) {
+                venda.setClientePF(null);
+            } else {
+                venda.setClientePF(clientePF.get());
+            }
+        }
+        if (dto.getIdClientePJ() != null) {
+            Optional<ClientePJ> clientePJ = clientePJService.getClientePJById(dto.getIdClientePJ());
+            if (!clientePJ.isPresent()) {
+                venda.setClientePJ(null);
+            } else {
+                venda.setClientePJ(clientePJ.get());
             }
         }
         return venda;

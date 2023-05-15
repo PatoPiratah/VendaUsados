@@ -45,13 +45,22 @@ public class VendaService {
             throw new RegraNegocioException("Veiculo inválido");
         }
 
-        //TODO perguntar ao Marco Antonio
-        /*
-        if (venda.getPessoa() == null || venda.getPessoa().getId() == null
-                || venda.getPessoa().getId() == 0) {
+        //Verificar se está sendo vendido para pessoa juridica e fisica ao mesmo tempo e se estão preenchidos
+
+        if (venda.getClientePF() == null && venda.getClientePJ() == null ||
+                venda.getClientePF().getId() == null && venda.getClientePJ().getId() == null ||
+                venda.getClientePF().getId() == 0 && venda.getClientePJ().getId() == 0
+           )
+        {
             throw new RegraNegocioException("Cliente inválido");
         }
-        */
+
+        // Verifica pessoa fisica e juridica ao mesmo tempo
+
+        if(venda.getClientePF() != null && venda.getClientePJ() != null)
+        {
+            throw new RegraNegocioException ("Vendendo para pessoa Juridica e Fisica ao mesmo tempo");
+        }
 
         if (venda.getFuncionario() == null || venda.getFuncionario().getId() == null
                 || venda.getFuncionario().getId() == 0) {

@@ -21,10 +21,10 @@ public class Venda {
 
     //TODO perguntar ao Marco Antonio
 
-    /*
     @ManyToOne
-    private Pessoa pessoa;
-    */
+    private ClientePJ clientePJ;
+    @ManyToOne
+    private ClientePF clientePF;
     @ManyToOne
     private Funcionario funcionario;
 

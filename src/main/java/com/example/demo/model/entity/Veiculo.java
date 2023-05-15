@@ -19,8 +19,6 @@ public class Veiculo {
 
     @ManyToOne
     private TipoVeiculo tipoVeiculo;
-    @ManyToOne
-    private Estoque estoque;
 
     private String marca;
     private String modelo;

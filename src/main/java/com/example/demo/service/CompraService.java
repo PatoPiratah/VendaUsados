@@ -1,4 +1,4 @@
-package com.example.demo.config.service;
+package com.example.demo.service;
 
 import com.example.demo.exception.RegraNegocioException;
 import com.example.demo.model.entity.Compra;

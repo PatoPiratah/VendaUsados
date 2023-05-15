@@ -23,13 +23,6 @@ public class VeiculoDTO {
     private String marca;
     private String modelo;
 
-    private Long idEstoque;
-    private Integer estoqueMax;
-
-    private String cep;
-    private String logradouro;
-    private String numero;
-    private String complemento;
 
     public static VeiculoDTO create(Veiculo veiculo) {
         ModelMapper modelMapper = new ModelMapper();
