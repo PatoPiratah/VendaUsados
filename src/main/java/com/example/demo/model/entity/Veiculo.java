@@ -16,10 +16,6 @@ public class Veiculo {
     private Long id;
     private String descricao;
     private String chassi;
-
-    @ManyToOne
-    private TipoVeiculo tipoVeiculo;
-
     private String marca;
     private String modelo;
 

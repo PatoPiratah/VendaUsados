@@ -53,9 +53,9 @@ public class CompraService {
             throw new RegraNegocioException("Data de Compra inválida");
         }
 
-        if (compra.getEstoque() == null || compra.getEstoque().getId() == null
-                || compra.getEstoque().getId() == 0) {
-            throw new RegraNegocioException("Estoque inválido");
+        if (compra.getLoja() == null || compra.getLoja().getId() == null
+                || compra.getLoja().getId() == 0) {
+            throw new RegraNegocioException("Loja inválida");
         }
     }
 }

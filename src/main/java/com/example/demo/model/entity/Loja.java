@@ -13,19 +13,19 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 
-public class Estoque {
+public class Loja {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Integer estoqueMax;
+    private Integer lojaMax;
     @ManyToOne
     private Endereco endereco;
 
     @ManyToMany
-    @JoinTable(name = "estoque_veiculo",
-            joinColumns = @JoinColumn(name = "estoque_id"),
+    @JoinTable(name = "loja_veiculo",
+            joinColumns = @JoinColumn(name = "loja_id"),
             inverseJoinColumns = @JoinColumn(name = "veiculo_id"))
     private List<Veiculo> veiculos = new ArrayList<Veiculo>();
 

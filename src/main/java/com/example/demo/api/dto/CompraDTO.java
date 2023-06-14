@@ -28,7 +28,7 @@ public class CompraDTO {
     private LocalDateTime dataHoraCompra;
 
     private String notaFiscal;
-    private Long idEstoque;
+    private Long idLoja;
 
     public static CompraDTO create(Compra compra) {
         ModelMapper modelMapper = new ModelMapper();

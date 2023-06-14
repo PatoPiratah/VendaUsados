@@ -20,9 +20,7 @@ public class Venda {
     private Veiculo veiculo;
 
     @ManyToOne
-    private ClientePJ clientePJ;
-    @ManyToOne
-    private ClientePF clientePF;
+    private Cliente cliente;
     @ManyToOne
     private Funcionario funcionario;
 

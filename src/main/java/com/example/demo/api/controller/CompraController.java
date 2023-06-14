@@ -3,7 +3,7 @@ package com.example.demo.api.controller;
 import com.example.demo.api.dto.CompraDTO;
 import com.example.demo.exception.RegraNegocioException;
 import com.example.demo.model.entity.Compra;
-import com.example.demo.model.entity.Estoque;
+import com.example.demo.model.entity.Loja;
 import com.example.demo.model.entity.Veiculo;
 import com.example.demo.service.*;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public class CompraController {
     private final com.example.demo.service.CompraService service;
     private final VeiculoService veiculoService;
-    private final EstoqueService estoqueService;
+    private final LojaService lojaService;
 
     @GetMapping()
     public ResponseEntity get() {
@@ -92,18 +92,18 @@ public class CompraController {
                 compra.setVeiculo(null);
             } else {
                 compra.setVeiculo(veiculo.get());
-                if (dto.getIdEstoque() != null) {
-                    Optional<Estoque> estoque = estoqueService.getEstoqueById(dto.getIdEstoque());
-                    if(estoque.isPresent()) {
-                        // Chama a lista, adiciona um veiculo no estoque e atualiza a variavel no banco de dados!
-                        Estoque estoqueSalvar = estoque.get();
-                        List<Veiculo> veiculosSalvar = estoqueSalvar.getVeiculos();
+                if (dto.getIdLoja() != null) {
+                    Optional<Loja> loja = lojaService.getLojaById(dto.getIdLoja());
+                    if(loja.isPresent()) {
+                        // Chama a lista, adiciona um veiculo no loja e atualiza a variavel no banco de dados!
+                        Loja lojaSalvar = loja.get();
+                        List<Veiculo> veiculosSalvar = lojaSalvar.getVeiculos();
                         veiculosSalvar.add(veiculo.get());
-                        estoqueSalvar.setVeiculos(veiculosSalvar);
-                        estoqueService.salvar(estoqueSalvar);
-                        compra.setEstoque(estoqueSalvar);
+                        lojaSalvar.setVeiculos(veiculosSalvar);
+                        lojaService.salvar(lojaSalvar);
+                        compra.setLoja(lojaSalvar);
                     } else {
-                        compra.setEstoque(null);
+                        compra.setLoja(null);
                     }
                 }
             }

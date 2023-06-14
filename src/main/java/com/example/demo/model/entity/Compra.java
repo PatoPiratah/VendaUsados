@@ -16,14 +16,7 @@ public class Compra {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
-    private Veiculo veiculo;
     private Double valor;
-
     private LocalDateTime dataHoraCompra;
-
     private String notaFiscal;
-
-    @ManyToOne
-    private Estoque estoque;
 }
