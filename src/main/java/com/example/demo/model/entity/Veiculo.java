@@ -16,6 +16,7 @@ public class Veiculo {
     private Long id;
     private String descricao;
     private String chassi;
+    private String imagem;
 
     @ManyToOne
     private TipoVeiculo tipoVeiculo;

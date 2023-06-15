@@ -14,14 +14,14 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @AllArgsConstructor
 public class VeiculoDTO {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long id;
     private String descricao;
     private String chassi;
     private Long idTipoVeiculo;
     private String marca;
     private String modelo;
+    private String imagem;
 
 
     public static VeiculoDTO create(Veiculo veiculo) {

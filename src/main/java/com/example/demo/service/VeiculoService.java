@@ -40,7 +40,7 @@ public class VeiculoService {
     }
 
     public void validar(Veiculo veiculo) {
-
+        System.out.print(veiculo);
         if (veiculo.getDescricao() == null || veiculo.getDescricao().trim().equals("")) {
             throw new RegraNegocioException("Descrição inválida");
         }

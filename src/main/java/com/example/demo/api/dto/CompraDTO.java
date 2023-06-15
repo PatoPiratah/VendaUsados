@@ -23,7 +23,6 @@ public class CompraDTO {
 
     private Long idVeiculo;
 
-
     private Double valor;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime dataCompra;
