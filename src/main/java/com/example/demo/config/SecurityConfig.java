@@ -48,16 +48,34 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/v1/alunos/**")
+                .antMatchers(HttpMethod.POST,"/api/v1/clientesPF/**")
                 .hasAnyRole("USER", "ADMIN")
-                .antMatchers("/api/v1/cursos/**")
+                .antMatchers("/api/v1/clientesPF/**")
+                .hasAnyRole( "ADMIN")
+
+                .antMatchers(HttpMethod.POST,"/api/v1/clientesPJ/**")
                 .hasAnyRole("USER", "ADMIN")
-                .antMatchers("/api/v1/disciplinas/**")
-                .hasRole("ADMIN")
-                .antMatchers("/api/v1/professores/**")
-                .hasRole("ADMIN")
-                .antMatchers("/api/v1/turmas/**")
-                .hasRole("ADMIN")
+                .antMatchers("/api/v1/clientesPJ/**")
+                .hasAnyRole( "ADMIN")
+
+                .antMatchers("/api/v1/compras/**")
+                .hasAnyRole( "ADMIN")
+
+                .antMatchers("/api/v1/funcionarios/**")
+                .hasAnyRole( "ADMIN")
+
+                .antMatchers("/api/v1/lojas/**")
+                .hasAnyRole( "ADMIN")
+
+                .antMatchers("/api/v1/tiposVeiculo/**")
+                .hasAnyRole( "ADMIN")
+
+                .antMatchers("/api/v1/vendas/**")
+                .hasAnyRole( "ADMIN")
+
+                .antMatchers("/api/v1/veiculos/**")
+                .hasAnyRole( "ADMIN")
+
                 .antMatchers(HttpMethod.POST, "/api/v1/usuarios/**")
                 .permitAll()
                 .anyRequest().authenticated()

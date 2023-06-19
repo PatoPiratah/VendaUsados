@@ -18,5 +18,9 @@ public class Compra {
     private Long id;
     private Double valor;
     private LocalDateTime dataHoraCompra;
+    @ManyToOne
+    private Veiculo veiculo;
+    @ManyToOne
+    private Loja loja;
     private String notaFiscal;
 }
