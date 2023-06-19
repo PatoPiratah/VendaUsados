@@ -14,4 +14,6 @@ public class Cliente extends Pessoa {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private String nome;
+
 }
