@@ -3,9 +3,9 @@ package com.example.demo.service;
 import com.example.demo.exception.RegraNegocioException;
 import com.example.demo.model.entity.Compra;
 import com.example.demo.model.repository.CompraRepository;
-import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -49,8 +49,13 @@ public class CompraService {
             throw new RegraNegocioException("Valor inválido");
         }
 
-        if (compra.getDataCompra() == null) {
+        if (compra.getDataHoraCompra() == null) {
             throw new RegraNegocioException("Data de Compra inválida");
+        }
+
+        if (compra.getLoja() == null || compra.getLoja().getId() == null
+                || compra.getLoja().getId() == 0) {
+            throw new RegraNegocioException("Loja inválida");
         }
     }
 }

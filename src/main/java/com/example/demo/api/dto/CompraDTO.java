@@ -25,10 +25,10 @@ public class CompraDTO {
 
     private Double valor;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime dataCompra;
+    private LocalDateTime dataHoraCompra;
 
     private String notaFiscal;
-    private Long idEstoque;
+    private Long idLoja;
 
     public static CompraDTO create(Compra compra) {
         ModelMapper modelMapper = new ModelMapper();

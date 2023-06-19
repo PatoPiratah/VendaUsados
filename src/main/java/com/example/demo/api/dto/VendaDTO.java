@@ -29,7 +29,7 @@ public class VendaDTO {
 
     private Double valor;
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime dataVenda;
+    private LocalDateTime dataHoraVenda;
 
     private String notaFiscal;
 

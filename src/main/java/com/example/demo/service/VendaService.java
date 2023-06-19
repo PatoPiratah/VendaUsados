@@ -3,9 +3,9 @@ package com.example.demo.service;
 import com.example.demo.exception.RegraNegocioException;
 import com.example.demo.model.entity.Venda;
 import com.example.demo.model.repository.VendaRepository;
-import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -45,17 +45,19 @@ public class VendaService {
             throw new RegraNegocioException("Veiculo inválido");
         }
 
-        //Verificar se está sendo vendido para pessoa juridica e fisica ao mesmo tempo e se estão preenchidos
+        //Verificar se pessoa juridica e fisica são nulos ao mesmo tempo!
 
-        if (venda.getClientePF() == null && venda.getClientePJ() == null ||
-                venda.getClientePF().getId() == null && venda.getClientePJ().getId() == null ||
-                venda.getClientePF().getId() == 0 && venda.getClientePJ().getId() == 0
-           )
+        if (venda.getClientePF() == null || venda.getClientePF().getId() == null ||
+                venda.getClientePF().getId() == 0)
         {
-            throw new RegraNegocioException("Cliente inválido");
+            if(venda.getClientePJ() == null || venda.getClientePJ().getId() == null ||
+                    venda.getClientePJ().getId() == 0)
+            {
+                throw new RegraNegocioException("Cliente inválido");
+            }
         }
 
-        // Verifica pessoa fisica e juridica ao mesmo tempo
+        // Verifica pessoa fisica e juridica ao mesmo tempo!
 
         if(venda.getClientePF() != null && venda.getClientePJ() != null)
         {
@@ -71,7 +73,7 @@ public class VendaService {
             throw new RegraNegocioException("Valor inválido");
         }
 
-        if (venda.getDataVenda() == null) {
+        if (venda.getDataHoraVenda() == null) {
             throw new RegraNegocioException("Data de Venda inválida");
         }
         
