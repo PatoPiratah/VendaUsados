@@ -67,5 +67,4 @@ public class SwaggerConfig {
         auths.add(reference);
         return auths;
     }
-
 }
