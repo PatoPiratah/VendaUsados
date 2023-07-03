@@ -26,7 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private JwtService jwtService;
 
-    @Bean
+@Bean
     PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
@@ -45,7 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
+        http.cors().and()
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST,"/api/v1/clientesPF/**")
@@ -97,6 +97,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 "/swagger-resources/**",
                 "/configuration/security",
                 "/swagger-ui.html",
-                "/webjars/**");
+                "/webjars/**",
+                "/api/v1/veiculos/**"
+        );
     }
 }

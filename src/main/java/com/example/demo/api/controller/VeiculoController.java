@@ -10,52 +10,59 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.http.ResponseEntity;
+
+import javax.validation.Valid;
 import java.util.List;
+import java.net.URI;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/veiculos")
 @RequiredArgsConstructor
-
-
+@Validated
 public class VeiculoController {
 
     private final VeiculoService service;
     private final TipoVeiculoService tipoVeiculoService;
 
     @GetMapping()
-    public ResponseEntity get() {
+    public ResponseEntity<List<VeiculoDTO>> get() {
         List<Veiculo> veiculos = service.getVeiculos();
-        return ResponseEntity.ok(veiculos.stream().map(VeiculoDTO::create).collect(Collectors.toList()));
+        List<VeiculoDTO> veiculoDTOs = veiculos.stream()
+                .map(VeiculoDTO::create)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(veiculoDTOs);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity get(@PathVariable("id") Long id) {
+    public ResponseEntity<VeiculoDTO> get(@PathVariable("id") Long id) {
         Optional<Veiculo> veiculo = service.getVeiculoById(id);
         if (!veiculo.isPresent()) {
-            return new ResponseEntity("Veiculo não encontrado", HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(veiculo.map(VeiculoDTO::create));
+        return ResponseEntity.ok(VeiculoDTO.create(veiculo.get()));
     }
 
     @PostMapping()
-    
-    public ResponseEntity post(VeiculoDTO dto) {
+    public ResponseEntity<Veiculo> post(@RequestBody @Valid VeiculoDTO dto) {
         try {
             Veiculo veiculo = converter(dto);
             veiculo = service.salvar(veiculo);
-            return new ResponseEntity(veiculo, HttpStatus.CREATED);
+            return ResponseEntity.created(URI.create("/api/v1/veiculos/" + veiculo.getId())).body(veiculo);
         } catch (RegraNegocioException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body(null);
         }
     }
-    @PutMapping("{id}")
-    public ResponseEntity atualizar(@PathVariable("id") Long id, VeiculoDTO dto) {
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Veiculo> atualizar(@PathVariable("id") Long id, @RequestBody @Valid VeiculoDTO dto) {
         if (!service.getVeiculoById(id).isPresent()) {
-            return new ResponseEntity("Veiculo não encontrado", HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
         try {
             Veiculo veiculo = converter(dto);
@@ -63,21 +70,21 @@ public class VeiculoController {
             service.salvar(veiculo);
             return ResponseEntity.ok(veiculo);
         } catch (RegraNegocioException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body(null);
         }
     }
 
-    @DeleteMapping("{id}")
-    public ResponseEntity excluir(@PathVariable("id") Long id) {
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> excluir(@PathVariable("id") Long id) {
         Optional<Veiculo> veiculo = service.getVeiculoById(id);
         if (!veiculo.isPresent()) {
-            return new ResponseEntity("Veiculo não encontrado", HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
         try {
             service.excluir(veiculo.get());
-            return new ResponseEntity(HttpStatus.NO_CONTENT);
+            return ResponseEntity.noContent().build();
         } catch (RegraNegocioException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().build();
         }
     }
 

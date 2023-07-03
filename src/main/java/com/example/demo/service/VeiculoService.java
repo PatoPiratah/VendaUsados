@@ -57,5 +57,8 @@ public class VeiculoService {
         if (veiculo.getModelo() == null || veiculo.getModelo().trim().equals("")) {
             throw new RegraNegocioException("Modelo inválido");
         }
+        if (veiculo.getValor() == null || (veiculo.getValor() <= 0)) {
+            throw new RegraNegocioException("Valor inválido");
+        }
     }
 }

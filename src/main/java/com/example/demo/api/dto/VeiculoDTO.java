@@ -22,7 +22,7 @@ public class VeiculoDTO {
     private String marca;
     private String modelo;
     private String imagem;
-
+    private Double valor;
 
     public static VeiculoDTO create(Veiculo veiculo) {
         ModelMapper modelMapper = new ModelMapper();

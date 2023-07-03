@@ -25,10 +25,14 @@ public class ClientePFController {
     private final EnderecoService enderecoService;
 
     @GetMapping()
-    public ResponseEntity get() {
-        List<ClientePF> clientePF = service.getClientesPF();
-        return ResponseEntity.ok(clientePF.stream().map(ClientePFDTO::create).collect(Collectors.toList()));
+    public ResponseEntity<List<ClientePFDTO>> get() {
+        List<ClientePF> clientePFs = service.getClientesPF();
+        List<ClientePFDTO> clientePFDTOs = clientePFs.stream()
+                .map(ClientePFDTO::create)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(clientePFDTOs);
     }
+
 
     @GetMapping("/{id}")
     public ResponseEntity get(@PathVariable("id") Long id) {
@@ -40,8 +44,7 @@ public class ClientePFController {
     }
 
     @PostMapping()
-
-    public ResponseEntity post(ClientePFDTO dto) {
+    public ResponseEntity post(@RequestBody ClientePFDTO dto) {
         try {
             ClientePF clientePF = converter(dto);
 
@@ -54,6 +57,7 @@ public class ClientePFController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
 
     @PutMapping("{id}")
     public ResponseEntity atualizar(@PathVariable("id") Long id, ClientePFDTO dto) {

@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/v1/vendas")
 @RequiredArgsConstructor
-
+@CrossOrigin
 public class VendaController {
     private final VendaService service;
     private final FuncionarioService funcionarioService;
@@ -27,32 +27,37 @@ public class VendaController {
     private final VeiculoService veiculoService;
 
     @GetMapping()
-    public ResponseEntity get() {
-        List<Venda> venda = service.getVendas();
-        return ResponseEntity.ok(venda.stream().map(VendaDTO::create).collect(Collectors.toList()));
+    public ResponseEntity<List<VendaDTO>> get() {
+        List<Venda> vendas = service.getVendas();
+        List<VendaDTO> vendaDTOs = vendas.stream()
+                .map(VendaDTO::create)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(vendaDTOs);
     }
+
 
     @GetMapping("/{id}")
-    public ResponseEntity get(@PathVariable("id") Long id) {
+    public ResponseEntity<VendaDTO> get(@PathVariable("id") Long id) {
         Optional<Venda> venda = service.getVendaById(id);
         if (!venda.isPresent()) {
-            return new ResponseEntity("Venda não encontrada", HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(venda.map(VendaDTO::create));
+        return ResponseEntity.ok(VendaDTO.create(venda.get()));
     }
 
-    @PostMapping()
 
-    public ResponseEntity post(VendaDTO dto) {
+    @PostMapping()
+    public ResponseEntity post(@RequestBody VendaDTO dto) {
         try {
             Venda venda = converter(dto);
-
+            System.out.println(venda.getClientePF());
             venda = service.salvar(venda);
             return new ResponseEntity(venda, HttpStatus.CREATED);
         } catch (RegraNegocioException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
 
     @PutMapping("{id}")
     public ResponseEntity atualizar(@PathVariable("id") Long id, VendaDTO dto) {
@@ -121,6 +126,8 @@ public class VendaController {
                 venda.setClientePJ(clientePJ.get());
             }
         }
+        System.out.println(venda.getClientePF());
+        System.out.println(dto.getIdClientePF());
         return venda;
     }
 }

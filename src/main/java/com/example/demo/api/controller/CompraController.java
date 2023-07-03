@@ -26,47 +26,50 @@ public class CompraController {
     private final LojaService lojaService;
 
     @GetMapping()
-    public ResponseEntity get() {
+    public ResponseEntity<List<CompraDTO>> get() {
         List<Compra> compra = service.getCompras();
-        return ResponseEntity.ok(compra.stream().map(CompraDTO::create).collect(Collectors.toList()));
+        List<CompraDTO> compraDTOs = compra.stream()
+                .map(CompraDTO::create)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(compraDTOs);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity get(@PathVariable("id") Long id) {
+    public ResponseEntity<CompraDTO> get(@PathVariable("id") Long id) {
         Optional<Compra> compra = service.getCompraById(id);
         if (!compra.isPresent()) {
-            return new ResponseEntity("Compra não encontrada", HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(compra.map(CompraDTO::create));
+        return ResponseEntity.ok(CompraDTO.create(compra.get()));
     }
 
-    @PostMapping()
 
-    public ResponseEntity post(CompraDTO dto) {
+    @PostMapping()
+    public ResponseEntity<?> post(@RequestBody CompraDTO dto) {
         try {
             Compra compra = converter(dto);
-
             compra = service.salvar(compra);
-            return new ResponseEntity(compra, HttpStatus.CREATED);
+            return new ResponseEntity<>(compra, HttpStatus.CREATED);
         } catch (RegraNegocioException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
     @PutMapping("{id}")
-    public ResponseEntity atualizar(@PathVariable("id") Long id, CompraDTO dto) {
+    public ResponseEntity<?> atualizar(@PathVariable("id") Long id, @RequestBody CompraDTO dto) {
         if (!service.getCompraById(id).isPresent()) {
-            return new ResponseEntity("Compra não encontrada", HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
         try {
             Compra compra = converter(dto);
             compra.setId(id);
-
             service.salvar(compra);
             return ResponseEntity.ok(compra);
         } catch (RegraNegocioException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
 
     @DeleteMapping("{id}")
     public ResponseEntity excluir(@PathVariable("id") Long id) {

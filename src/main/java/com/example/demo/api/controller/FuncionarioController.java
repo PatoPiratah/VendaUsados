@@ -19,29 +19,30 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/v1/funcionarios")
 @RequiredArgsConstructor
-
 public class FuncionarioController {
     private final FuncionarioService service;
     private final EnderecoService enderecoService;
 
     @GetMapping()
-    public ResponseEntity get() {
+    public ResponseEntity<List<FuncionarioDTO>> get() {
         List<Funcionario> funcionario = service.getFuncionarios();
-        return ResponseEntity.ok(funcionario.stream().map(FuncionarioDTO::create).collect(Collectors.toList()));
+        List<FuncionarioDTO> funcionarioDTOs = funcionario.stream()
+                .map(FuncionarioDTO::create)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(funcionarioDTOs);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity get(@PathVariable("id") Long id) {
+    public ResponseEntity<FuncionarioDTO> get(@PathVariable("id") Long id) {
         Optional<Funcionario> funcionario = service.getFuncionarioById(id);
         if (!funcionario.isPresent()) {
-            return new ResponseEntity("Funcionario não encontrado", HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(funcionario.map(FuncionarioDTO::create));
+        return ResponseEntity.ok(FuncionarioDTO.create(funcionario.get()));
     }
 
     @PostMapping()
-
-    public ResponseEntity post(FuncionarioDTO dto) {
+    public ResponseEntity<?> post(@RequestBody FuncionarioDTO dto) {
         try {
             Funcionario funcionario = converter(dto);
 
@@ -49,16 +50,16 @@ public class FuncionarioController {
             funcionario.setEndereco(endereco);
 
             funcionario = service.salvar(funcionario);
-            return new ResponseEntity(funcionario, HttpStatus.CREATED);
+            return new ResponseEntity<>(funcionario, HttpStatus.CREATED);
         } catch (RegraNegocioException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
     @PutMapping("{id}")
-    public ResponseEntity atualizar(@PathVariable("id") Long id, FuncionarioDTO dto) {
+    public ResponseEntity<?> atualizar(@PathVariable("id") Long id, @RequestBody FuncionarioDTO dto) {
         if (!service.getFuncionarioById(id).isPresent()) {
-            return new ResponseEntity("Funcionario não encontrado", HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
         try {
             Funcionario funcionario = converter(dto);
@@ -75,14 +76,14 @@ public class FuncionarioController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity excluir(@PathVariable("id") Long id) {
+    public ResponseEntity<?> excluir(@PathVariable("id") Long id) {
         Optional<Funcionario> funcionario = service.getFuncionarioById(id);
         if (!funcionario.isPresent()) {
-            return new ResponseEntity("Funcionario não encontrado", HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
         try {
             service.excluir(funcionario.get());
-            return new ResponseEntity(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (RegraNegocioException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

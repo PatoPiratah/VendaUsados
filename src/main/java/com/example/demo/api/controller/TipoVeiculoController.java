@@ -17,41 +17,42 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/v1/tiposVeiculo")
 @RequiredArgsConstructor
-
-
 public class TipoVeiculoController {
     private final TipoVeiculoService service;
 
     @GetMapping()
-    public ResponseEntity get() {
+    public ResponseEntity<List<TipoVeiculoDTO>> get() {
         List<TipoVeiculo> tiposVeiculo = service.getTiposVeiculo();
-        return ResponseEntity.ok(tiposVeiculo.stream().map(TipoVeiculoDTO::create).collect(Collectors.toList()));
+        List<TipoVeiculoDTO> tipoVeiculoDTOs = tiposVeiculo.stream()
+                .map(TipoVeiculoDTO::create)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(tipoVeiculoDTOs);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity get(@PathVariable("id") Long id) {
+    public ResponseEntity<TipoVeiculoDTO> get(@PathVariable("id") Long id) {
         Optional<TipoVeiculo> tipoVeiculo = service.getTipoVeiculoById(id);
         if (!tipoVeiculo.isPresent()) {
-            return new ResponseEntity("Tipo de Veiculo não encontrado", HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(tipoVeiculo.map(TipoVeiculoDTO::create));
+        return ResponseEntity.ok(TipoVeiculoDTO.create(tipoVeiculo.get()));
     }
 
     @PostMapping()
-    
-    public ResponseEntity post(TipoVeiculoDTO dto) {
+    public ResponseEntity<?> post(@RequestBody TipoVeiculoDTO dto) {
         try {
             TipoVeiculo tipoVeiculo = converter(dto);
             tipoVeiculo = service.salvar(tipoVeiculo);
-            return new ResponseEntity(tipoVeiculo, HttpStatus.CREATED);
+            return new ResponseEntity<>(tipoVeiculo, HttpStatus.CREATED);
         } catch (RegraNegocioException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
     @PutMapping("{id}")
-    public ResponseEntity atualizar(@PathVariable("id") Long id, TipoVeiculoDTO dto) {
+    public ResponseEntity<?> atualizar(@PathVariable("id") Long id, @RequestBody TipoVeiculoDTO dto) {
         if (!service.getTipoVeiculoById(id).isPresent()) {
-            return new ResponseEntity("Tipo de Veiculo não encontrado", HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
         try {
             TipoVeiculo tipoVeiculo = converter(dto);
@@ -64,22 +65,22 @@ public class TipoVeiculoController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity excluir(@PathVariable("id") Long id) {
+    public ResponseEntity<?> excluir(@PathVariable("id") Long id) {
         Optional<TipoVeiculo> tipoVeiculo = service.getTipoVeiculoById(id);
         if (!tipoVeiculo.isPresent()) {
-            return new ResponseEntity("Tipo Veiculo não encontrado", HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
         try {
             service.excluir(tipoVeiculo.get());
-            return new ResponseEntity(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (RegraNegocioException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
     public TipoVeiculo converter(TipoVeiculoDTO dto) {
         ModelMapper modelMapper = new ModelMapper();
         TipoVeiculo tipoVeiculo = modelMapper.map(dto, TipoVeiculo.class);
-
         return tipoVeiculo;
     }
 }

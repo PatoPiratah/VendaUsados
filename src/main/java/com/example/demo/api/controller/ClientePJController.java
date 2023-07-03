@@ -25,23 +25,26 @@ public class ClientePJController {
     private final EnderecoService enderecoService;
 
     @GetMapping()
-    public ResponseEntity get() {
+    public ResponseEntity<List<ClientePJDTO>> get() {
         List<ClientePJ> clientePJ = service.getClientesPJ();
-        return ResponseEntity.ok(clientePJ.stream().map(ClientePJDTO::create).collect(Collectors.toList()));
+        List<ClientePJDTO> clientePJDTOs = clientePJ.stream()
+                .map(ClientePJDTO::create)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(clientePJDTOs);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity get(@PathVariable("id") Long id) {
+    public ResponseEntity<ClientePJDTO> get(@PathVariable("id") Long id) {
         Optional<ClientePJ> clientePJ = service.getClientePJById(id);
         if (!clientePJ.isPresent()) {
-            return new ResponseEntity("Cliente PJ não encontrado", HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(clientePJ.map(ClientePJDTO::create));
+        return ResponseEntity.ok(ClientePJDTO.create(clientePJ.get()));
     }
 
-    @PostMapping()
 
-    public ResponseEntity post(ClientePJDTO dto) {
+    @PostMapping()
+    public ResponseEntity<?> post(@RequestBody ClientePJDTO dto) {
         try {
             ClientePJ clientePJ = converter(dto);
 
@@ -49,16 +52,16 @@ public class ClientePJController {
             clientePJ.setEndereco(endereco);
 
             clientePJ = service.salvar(clientePJ);
-            return new ResponseEntity(clientePJ, HttpStatus.CREATED);
+            return new ResponseEntity<>(clientePJ, HttpStatus.CREATED);
         } catch (RegraNegocioException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
     @PutMapping("{id}")
-    public ResponseEntity atualizar(@PathVariable("id") Long id, ClientePJDTO dto) {
+    public ResponseEntity<?> atualizar(@PathVariable("id") Long id, @RequestBody ClientePJDTO dto) {
         if (!service.getClientePJById(id).isPresent()) {
-            return new ResponseEntity("Cliente PJ não encontrada", HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
         try {
             ClientePJ clientePJ = converter(dto);
@@ -73,6 +76,7 @@ public class ClientePJController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
 
     @DeleteMapping("{id}")
     public ResponseEntity excluir(@PathVariable("id") Long id) {

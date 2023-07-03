@@ -40,10 +40,6 @@ public class VendaService {
 
     public void validar(Venda venda) {
 
-        if (venda.getVeiculo() == null || venda.getVeiculo().getId() == null
-                || venda.getVeiculo().getId() == 0) {
-            throw new RegraNegocioException("Veiculo inválido");
-        }
 
         //Verificar se pessoa juridica e fisica são nulos ao mesmo tempo!
 
@@ -73,14 +69,15 @@ public class VendaService {
             throw new RegraNegocioException("Valor inválido");
         }
 
-        if (venda.getDataHoraVenda() == null) {
+        if (venda.getDataVenda() == null) {
             throw new RegraNegocioException("Data de Venda inválida");
         }
-        
-        //TODO codificar o Caixa-Dois
-        if (venda.getNotaFiscal() == null || venda.getNotaFiscal().trim().equals("")) {
-            throw new RegraNegocioException("Nota Fiscal inválida");
+        if (venda.getVeiculo() == null || venda.getVeiculo().getId() == null
+                || venda.getVeiculo().getId() == 0) {
+            throw new RegraNegocioException("Veiculo inválido");
         }
+        
+
     }
 }
 

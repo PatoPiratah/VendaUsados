@@ -17,7 +17,7 @@ public class Veiculo {
     private String descricao;
     private String chassi;
     private String imagem;
-
+    private Double valor;
     @ManyToOne
     private TipoVeiculo tipoVeiculo;
 

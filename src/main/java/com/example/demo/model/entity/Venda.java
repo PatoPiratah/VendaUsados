@@ -28,7 +28,7 @@ public class Venda {
 
     private Double valor;
 
-    private LocalDateTime dataHoraVenda;
+    private LocalDateTime dataVenda;
 
     private String notaFiscal;
 

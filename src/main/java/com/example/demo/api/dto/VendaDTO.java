@@ -1,6 +1,7 @@
 package com.example.demo.api.dto;
 
 import com.example.demo.model.entity.Venda;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,8 +29,9 @@ public class VendaDTO {
     private Long idClientePJ;
 
     private Double valor;
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime dataHoraVenda;
+    @JsonFormat(shape=JsonFormat.Shape.STRING,pattern = "dd/MM/yyyy, HH:mm:ss")
+
+    private LocalDateTime dataVenda;
 
     private String notaFiscal;
 

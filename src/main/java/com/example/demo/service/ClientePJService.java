@@ -57,7 +57,7 @@ public class ClientePJService {
             }
 
             if (clientePJ.getTelefoneContato() == null || clientePJ.getTelefoneContato().trim().equals("")) {
-                throw new RegraNegocioException("Email do Contato inválido");
+                throw new RegraNegocioException("Telefone do Contato Invalido");
             }
 
             if (clientePJ.getEmail() == null || clientePJ.getEmail().trim().equals("")) {

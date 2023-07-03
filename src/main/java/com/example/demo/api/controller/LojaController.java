@@ -19,30 +19,30 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/v1/lojas")
 @RequiredArgsConstructor
-
-
 public class LojaController {
     private final LojaService service;
     private final EnderecoService enderecoService;
 
     @GetMapping()
-    public ResponseEntity get() {
+    public ResponseEntity<List<LojaDTO>> get() {
         List<Loja> lojas = service.getLojas();
-        return ResponseEntity.ok(lojas.stream().map(LojaDTO::create).collect(Collectors.toList()));
+        List<LojaDTO> lojaDTOs = lojas.stream()
+                .map(LojaDTO::create)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(lojaDTOs);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity get(@PathVariable("id") Long id) {
+    public ResponseEntity<LojaDTO> get(@PathVariable("id") Long id) {
         Optional<Loja> loja = service.getLojaById(id);
         if (!loja.isPresent()) {
-            return new ResponseEntity("Loja não encontrado", HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
-        return ResponseEntity.ok(loja.map(LojaDTO::create));
+        return ResponseEntity.ok(LojaDTO.create(loja.get()));
     }
 
     @PostMapping()
-    
-    public ResponseEntity post(LojaDTO dto) {
+    public ResponseEntity<?> post(@RequestBody LojaDTO dto) {
         try {
             Loja loja = converter(dto);
 
@@ -50,15 +50,16 @@ public class LojaController {
             loja.setEndereco(endereco);
 
             loja = service.salvar(loja);
-            return new ResponseEntity(loja, HttpStatus.CREATED);
+            return new ResponseEntity<>(loja, HttpStatus.CREATED);
         } catch (RegraNegocioException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
     @PutMapping("{id}")
-    public ResponseEntity atualizar(@PathVariable("id") Long id, LojaDTO dto) {
+    public ResponseEntity<?> atualizar(@PathVariable("id") Long id, @RequestBody LojaDTO dto) {
         if (!service.getLojaById(id).isPresent()) {
-            return new ResponseEntity("Loja não encontrado", HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
         try {
             Loja loja = converter(dto);
@@ -75,18 +76,19 @@ public class LojaController {
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity excluir(@PathVariable("id") Long id) {
+    public ResponseEntity<?> excluir(@PathVariable("id") Long id) {
         Optional<Loja> loja = service.getLojaById(id);
         if (!loja.isPresent()) {
-            return new ResponseEntity("Loja não encontrado", HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
         try {
             service.excluir(loja.get());
-            return new ResponseEntity(HttpStatus.NO_CONTENT);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (RegraNegocioException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
     public Loja converter(LojaDTO dto) {
         ModelMapper modelMapper = new ModelMapper();
         Loja loja = modelMapper.map(dto, Loja.class);
